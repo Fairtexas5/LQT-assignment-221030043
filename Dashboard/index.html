@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTextile Manufacturing - Sustainability Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__content">
+            <div class="header__brand">
+                <span class="header__logo">🌱</span>
+                <h1 class="header__title">EcoTextile Manufacturing</h1>
+            </div>
+            <div class="header__info">
+                <span class="header__time" id="current-time"></span>
+                <span class="header__date" id="current-date"></span>
+            </div>
+            <div class="header__controls">
+                <button class="header__refresh btn btn--secondary btn--sm" id="refresh-btn">
+                    <span>🔄</span> Refresh
+                </button>
+                <div class="header__notifications">
+                    <button class="notifications-btn" id="notifications-btn">
+                        <span class="bell-icon">🔔</span>
+                        <span class="notifications-badge" id="notifications-count">4</span>
+                    </button>
+                </div>
+                <div class="header__user">
+                    <div class="user-avatar">👤</div>
+                    <span class="user-name">Head of Sustainability</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filter Section -->
+    <div class="filters">
+        <div class="filters__content">
+            <div class="filters__group">
+                <select class="form-control filter-select" id="time-filter">
+                    <option value="today">Today</option>
+                    <option value="week" selected>This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                </select>
+                <select class="form-control filter-select" id="unit-filter">
+                    <option value="all">All Units</option>
+                    <option value="unit-a">Unit A</option>
+                    <option value="unit-b">Unit B</option>
+                    <option value="unit-c">Unit C</option>
+                </select>
+                <select class="form-control filter-select" id="department-filter">
+                    <option value="all">All Departments</option>
+                    <option value="dyeing">Dyeing</option>
+                    <option value="weaving">Weaving</option>
+                    <option value="finishing">Finishing</option>
+                    <option value="packaging">Packaging</option>
+                </select>
+                <select class="form-control filter-select" id="machine-filter">
+                    <option value="all">All Machines</option>
+                    <option value="machine-1">Machine 1</option>
+                    <option value="machine-2">Machine 2</option>
+                    <option value="machine-3">Machine 3</option>
+                    <option value="machine-4">Machine 4</option>
+                    <option value="machine-5">Machine 5</option>
+                </select>
+                <select class="form-control filter-select" id="shift-filter">
+                    <option value="all">All Shifts</option>
+                    <option value="morning">Morning</option>
+                    <option value="evening">Evening</option>
+                    <option value="night">Night</option>
+                </select>
+                <button class="btn btn--outline btn--sm" id="reset-filters">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <div class="dashboard__content">
+            <!-- KPI Tiles -->
+            <div class="kpi-grid">
+                <!-- Energy Consumption -->
+                <div class="kpi-tile" data-kpi="energy">
+                    <div class="kpi-tile__header">
+                        <h3 class="kpi-tile__title">⚡ Energy Consumption</h3>
+                        <span class="status status--warning">Warning</span>
+                    </div>
+                    <div class="kpi-tile__value">
+                        <span class="kpi-tile__number">1,247.5</span>
+                        <span class="kpi-tile__unit">kWh</span>
+                    </div>
+                    <div class="kpi-tile__trend">
+                        <span class="trend-indicator trend--down">↓ 4.2%</span>
+                        <div class="mini-chart" id="energy-mini-chart" style="position: relative; height: 40px;"></div>
+                    </div>
+                </div>
+
+                <!-- Water Usage -->
+                <div class="kpi-tile" data-kpi="water">
+                    <div class="kpi-tile__header">
+                        <h3 class="kpi-tile__title">💧 Water Usage</h3>
+                        <span class="status status--warning">Warning</span>
+                    </div>
+                    <div class="kpi-tile__value">
+                        <span class="kpi-tile__number">8,450</span>
+                        <span class="kpi-tile__unit">liters</span>
+                    </div>
+                    <div class="kpi-tile__stats">
+                        <span class="recycling-rate">♻️ 67% recycled</span>
+                        <span class="trend-indicator trend--down">↓ 3.9%</span>
+                    </div>
+                </div>
+
+                <!-- Waste Management -->
+                <div class="kpi-tile" data-kpi="waste">
+                    <div class="kpi-tile__header">
+                        <h3 class="kpi-tile__title">🗑️ Waste Management</h3>
+                        <span class="status status--error">Critical</span>
+                    </div>
+                    <div class="kpi-tile__value">
+                        <span class="kpi-tile__number">125.3</span>
+                        <span class="kpi-tile__unit">kg</span>
+                    </div>
+                    <div class="kpi-tile__stats">
+                        <span class="recycling-rate">♻️ 82% recycled</span>
+                        <span class="trend-indicator trend--down">↓ 10.5%</span>
+                    </div>
+                </div>
+
+                <!-- Carbon Emissions -->
+                <div class="kpi-tile" data-kpi="emissions">
+                    <div class="kpi-tile__header">
+                        <h3 class="kpi-tile__title">🌍 Carbon Emissions</h3>
+                        <span class="status status--warning">Warning</span>
+                    </div>
+                    <div class="kpi-tile__value">
+                        <span class="kpi-tile__number">45.7</span>
+                        <span class="kpi-tile__unit">tonnes CO2eq</span>
+                    </div>
+                    <div class="kpi-tile__stats">
+                        <span class="reduction-rate">📉 12.3% reduction</span>
+                        <span class="trend-indicator trend--down">↓ 12.1%</span>
+                    </div>
+                </div>
+
+                <!-- Overall Performance -->
+                <div class="kpi-tile kpi-tile--large" data-kpi="overall">
+                    <div class="kpi-tile__header">
+                        <h3 class="kpi-tile__title">📊 Overall Performance</h3>
+                        <span class="status status--success">Good</span>
+                    </div>
+                    <div class="kpi-tile__value">
+                        <span class="kpi-tile__number">78</span>
+                        <span class="kpi-tile__unit">/100</span>
+                    </div>
+                    <div class="radar-chart" id="overall-radar-chart" style="position: relative; height: 120px;"></div>
+                </div>
+            </div>
+
+            <!-- Detailed Insights Section -->
+            <div class="insights hidden" id="insights-section">
+                <div class="insights__header">
+                    <h2 id="insights-title">Detailed Insights</h2>
+                    <button class="btn btn--outline btn--sm" id="close-insights">✕ Close</button>
+                </div>
+                <div class="insights__content">
+                    <div class="insights__main-chart">
+                        <canvas id="main-insight-chart"></canvas>
+                    </div>
+                    <div class="insights__stats">
+                        <div class="stat-card">
+                            <h4>Current Value</h4>
+                            <span id="insight-current">-</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Target</h4>
+                            <span id="insight-target">-</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Cost Impact</h4>
+                            <span id="insight-cost">-</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Trend</h4>
+                            <span id="insight-trend">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Progress Section -->
+            <div class="goals">
+                <h2 class="goals__title">🎯 Sustainability Goals Progress</h2>
+                <div class="goals__grid">
+                    <div class="goal-card">
+                        <div class="goal-card__header">
+                            <h3>Reduce Energy Consumption</h3>
+                            <span class="status status--warning">Behind Schedule</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 89%"></div>
+                        </div>
+                        <div class="goal-stats">
+                            <span>1,247.5 / 1,200 kWh/day</span>
+                            <span>Target: Dec 2025</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-card">
+                        <div class="goal-card__header">
+                            <h3>Water Recycling Rate</h3>
+                            <span class="status status--success">On Track</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 89%"></div>
+                        </div>
+                        <div class="goal-stats">
+                            <span>67% / 75% recycled</span>
+                            <span>Target: Dec 2025</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-card">
+                        <div class="goal-card__header">
+                            <h3>Waste Reduction</h3>
+                            <span class="status status--error">At Risk</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                        <div class="goal-stats">
+                            <span>125.3 / 100 kg/day</span>
+                            <span>Target: Dec 2025</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-card">
+                        <div class="goal-card__header">
+                            <h3>Carbon Neutrality</h3>
+                            <span class="status status--success">On Track</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%"></div>
+                        </div>
+                        <div class="goal-stats">
+                            <span>45.7 / 40 tonnes CO2eq/month</span>
+                            <span>Target: Dec 2030</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Section -->
+            <div class="export">
+                <h3>📋 Export Reports</h3>
+                <div class="export__controls">
+                    <div class="export__date-range">
+                        <input type="date" class="form-control" id="export-start" value="2025-01-01">
+                        <span>to</span>
+                        <input type="date" class="form-control" id="export-end" value="2025-08-24">
+                    </div>
+                    <div class="export__buttons">
+                        <button class="btn btn--outline btn--sm" id="export-pdf">📄 PDF</button>
+                        <button class="btn btn--outline btn--sm" id="export-csv">📊 CSV</button>
+                        <button class="btn btn--outline btn--sm" id="export-excel">📈 Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notifications Panel -->
+    <div class="notifications-panel hidden" id="notifications-panel">
+        <div class="notifications-panel__header">
+            <h3>🔔 Notifications</h3>
+            <button class="btn btn--outline btn--sm" id="close-notifications">✕</button>
+        </div>
+        <div class="notifications-panel__content">
+            <div class="alert alert--critical">
+                <div class="alert__header">
+                    <span class="alert__type">Critical</span>
+                    <span class="alert__time">1h ago</span>
+                </div>
+                <h4 class="alert__title">Waste Threshold Exceeded</h4>
+                <p class="alert__message">Unit B waste generation is 25% above target in the Dyeing department</p>
+                <button class="alert__dismiss">Dismiss</button>
+            </div>
+
+            <div class="alert alert--warning">
+                <div class="alert__header">
+                    <span class="alert__type">Warning</span>
+                    <span class="alert__time">2h ago</span>
+                </div>
+                <h4 class="alert__title">High Water Usage Detected</h4>
+                <p class="alert__message">Water consumption spike detected in finishing processes during night shift</p>
+                <button class="alert__dismiss">Dismiss</button>
+            </div>
+
+            <div class="alert alert--info">
+                <div class="alert__header">
+                    <span class="alert__type">Info</span>
+                    <span class="alert__time">5h ago</span>
+                </div>
+                <h4 class="alert__title">Energy Efficiency Milestone</h4>
+                <p class="alert__message">Unit A achieved 15% energy reduction target this month</p>
+                <button class="alert__dismiss">Dismiss</button>
+            </div>
+
+            <div class="alert alert--warning">
+                <div class="alert__header">
+                    <span class="alert__type">Warning</span>
+                    <span class="alert__time">7h ago</span>
+                </div>
+                <h4 class="alert__title">Emissions Above Target</h4>
+                <p class="alert__message">Monthly CO2 emissions trending 14% above reduction goals</p>
+                <button class="alert__dismiss">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
